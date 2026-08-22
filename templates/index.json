@@ -91,7 +91,7 @@
       "settings": {
         "title": "Nuevos Ingresos - Stock Inmediato",
         "heading_size": "h2",
-        "description": "Equipos disponibles en almacén nacional para despacho express en 24 a 48 hrs a todo México.",
+        "description": "<p>Equipos disponibles en almacén nacional para despacho express en 24 a 48 hrs a todo México.</p>",
         "show_description": true,
         "description_style": "body",
         "collection": "all",
@@ -119,7 +119,7 @@
       "settings": {
         "title": "Equipos bajo pedido",
         "heading_size": "h2",
-        "description": "Hardware de última generación y componentes especializados importados directamente con tiempo de entrega de 7-14 días hábiles.",
+        "description": "<p>Hardware de última generación y componentes especializados importados directamente con tiempo de entrega de 7-14 días hábiles.</p>",
         "show_description": true,
         "description_style": "body",
         "collection": "all",
