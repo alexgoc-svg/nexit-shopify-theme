@@ -1,0 +1,100 @@
+{% comment %}
+  Base Tracking Scripts Snippet for Mexico eCommerce (Nexit)
+  Supports Meta Pixel (Facebook) & Google Analytics 4 (GA4) with dynamic event triggers.
+
+  Usage:
+  {% render 'tracking-scripts' %}
+{% endcomment %}
+
+{%- liquid
+  assign meta_pixel_id = settings.meta_pixel_id | default: '123456789012345'
+  assign ga4_measurement_id = settings.ga4_measurement_id | default: 'G-XXXXXXXXXX'
+-%}
+
+<!-- Google Analytics 4 (GA4) Base Tag -->
+{% # theme-check-disable RemoteAsset %}
+{%- if ga4_measurement_id != blank -%}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga4_measurement_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '{{ ga4_measurement_id }}', {
+      send_page_view: true,
+      currency: '{{ cart.currency.iso_code | default: "MXN" }}'
+    });
+
+    {%- if template.name == 'product' -%}
+      gtag('event', 'view_item', {
+        currency: '{{ cart.currency.iso_code | default: "MXN" }}',
+        value: {{ product.price | divided_by: 100.00 }},
+        items: [
+          {
+            item_id: '{{ product.selected_or_first_available_variant.sku | default: product.id }}',
+            item_name: {{ product.title | json }},
+            item_brand: {{ product.vendor | json }},
+            item_category: {{ product.type | json }},
+            price: {{ product.price | divided_by: 100.00 }}
+          }
+        ]
+      });
+    {%- elsif template.name == 'cart' -%}
+      gtag('event', 'view_cart', {
+        currency: '{{ cart.currency.iso_code | default: "MXN" }}',
+        value: {{ cart.total_price | divided_by: 100.00 }},
+        items: [
+          {%- for item in cart.items -%}
+            {
+              item_id: '{{ item.sku | default: item.product_id }}',
+              item_name: {{ item.product.title | json }},
+              price: {{ item.price | divided_by: 100.00 }},
+              quantity: {{ item.quantity }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      });
+    {%- endif -%}
+  </script>
+{%- endif -%}
+
+<!-- Meta Pixel (Facebook) Base Code -->
+{%- if meta_pixel_id != blank -%}
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', '{{ meta_pixel_id }}');
+    fbq('track', 'PageView');
+
+    {%- if template.name == 'product' -%}
+      fbq('track', 'ViewContent', {
+        content_name: {{ product.title | json }},
+        content_category: {{ product.type | json }},
+        content_ids: ['{{ product.selected_or_first_available_variant.id }}'],
+        content_type: 'product',
+        value: {{ product.price | divided_by: 100.00 }},
+        currency: '{{ cart.currency.iso_code | default: "MXN" }}'
+      });
+    {%- elsif template.name == 'cart' -%}
+      fbq('track', 'InitiateCheckout', {
+        num_items: {{ cart.item_count }},
+        value: {{ cart.total_price | divided_by: 100.00 }},
+        currency: '{{ cart.currency.iso_code | default: "MXN" }}'
+      });
+    {%- endif -%}
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id={{ meta_pixel_id }}&ev=PageView&noscript=1"
+      alt="Meta Pixel"
+    />
+  </noscript>
+{%- endif -%}
+{% # theme-check-enable RemoteAsset %}

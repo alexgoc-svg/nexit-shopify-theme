@@ -1,35 +1,43 @@
 {
   "sections": {
-    "image_banner": {
+    "hero_banner": {
       "type": "image-banner",
       "blocks": {
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "Tecnología de Alto Rendimiento en México",
             "heading_size": "h0"
           }
         },
-        "button": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Hardware, Componentes Especializados y Equipos de Importación con Entrega Inmediata o Bajo Pedido.",
+            "text_style": "body"
+          }
+        },
+        "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Explorar Catálogo",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_secondary_1": false,
+            "button_label_2": "Equipos Bajo Pedido",
+            "button_link_2": "shopify://collections/all",
+            "button_style_secondary_2": true
           }
         }
       },
       "block_order": [
         "heading",
-        "button"
+        "text",
+        "buttons"
       ],
       "settings": {
         "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
         "show_text_box": false,
         "image_behavior": "none",
         "desktop_content_alignment": "center",
@@ -39,37 +47,152 @@
         "show_text_below": false
       }
     },
-    "featured_collection": {
+    "featured_categories": {
+      "type": "collection-list",
+      "blocks": {
+        "category_1": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "category_2": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "category_3": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "category_4": {
+          "type": "featured_collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4"
+      ],
+      "settings": {
+        "title": "Categorías Destacadas",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "show_view_all": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    },
+    "new_arrivals": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
+        "title": "Nuevos Ingresos - Stock Inmediato",
         "heading_size": "h2",
-        "description": "",
-        "show_description": false,
+        "description": "Equipos disponibles en almacén nacional para despacho express en 24 a 48 hrs a todo México.",
+        "show_description": true,
         "description_style": "body",
         "collection": "all",
-        "products_to_show": 8,
+        "products_to_show": 4,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
         "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "standard",
         "columns_mobile": "2",
-        "padding_top": 44,
+        "swipe_on_mobile": true,
+        "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "preorder_equipment": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Equipos bajo pedido",
+        "heading_size": "h2",
+        "description": "Hardware de última generación y componentes especializados importados directamente con tiempo de entrega de 7-14 días hábiles.",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "all",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-2",
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "enable_desktop_slider": false,
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "advantages_mexico": {
+      "type": "multicolumn",
+      "blocks": {
+        "col_1": {
+          "type": "column",
+          "settings": {
+            "title": "Envíos Nacionales Express",
+            "text": "<p>Cobertura en los 32 estados de la República Mexicana mediante DHL Express, FedEx y Estafeta con tracking en tiempo real.</p>"
+          }
+        },
+        "col_2": {
+          "type": "column",
+          "settings": {
+            "title": "Facturación Fiscal CFDI 4.0",
+            "text": "<p>Emisión inmediata de factura fiscal con desglose de IVA y validación ante el SAT para personas físicas y morales.</p>"
+          }
+        },
+        "col_3": {
+          "type": "column",
+          "settings": {
+            "title": "Garantía y Soporte Local",
+            "text": "<p>Todos nuestros equipos cuentan con garantía nacional directa y asistencia técnica especializada en México.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3"
+      ],
+      "settings": {
+        "title": "¿Por qué elegir Nexit México?",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 44,
+        "padding_bottom": 44
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero_banner",
+    "featured_categories",
+    "new_arrivals",
+    "preorder_equipment",
+    "advantages_mexico"
   ]
 }

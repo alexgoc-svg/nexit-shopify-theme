@@ -1,0 +1,83 @@
+.customer:not(.account):not(.order) {
+  margin: 0 auto;
+  max-width: 60rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-align: center;
+}
+
+.customer form {
+  margin-top: 4rem;
+}
+
+.customer .field {
+  margin: 2rem 0 0 0;
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.customer .field label {
+  font-size: 1.3rem;
+  left: 1.5rem;
+  top: 1.5rem;
+  margin-bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: top var(--duration-short) ease, font-size var(--duration-short) ease;
+  color: rgba(var(--color-foreground), 0.75);
+  letter-spacing: 0.1rem;
+  line-height: 1.5;
+}
+
+.customer .field input,
+.customer .field select {
+  font-size: 1.4rem;
+  line-height: calc(1 + 0.5 / var(--font-body-scale));
+  letter-spacing: 0.04rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  border-radius: var(--inputs-radius);
+  border: var(--inputs-border-width) solid rgba(var(--color-foreground), var(--inputs-border-opacity));
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+
+.customer .field input:focus,
+.customer .field select:focus {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.1rem;
+}
+
+.customer .field input:focus ~ label,
+.customer .field input:not(:placeholder-shown) ~ label,
+.customer .field select ~ label {
+  top: 0.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.04rem;
+}
+
+.customer ul {
+  line-height: calc(1 + 0.6 / var(--font-body-scale));
+  padding-left: 4.4rem;
+  text-align: left;
+  margin-bottom: 4rem;
+}
+
+.customer button {
+  margin: 2.5rem 0 1.5rem;
+}
+
+.customer .select {
+  position: relative;
+  width: 100%;
+}
+
+.customer .select svg {
+  position: absolute;
+  right: 1.5rem;
+  top: calc(50% - 0.3rem);
+  width: 1rem;
+  pointer-events: none;
+}

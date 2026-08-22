@@ -1,0 +1,194 @@
+﻿/* ==========================================================================
+   Shopify Mexican Tech Market Custom Styles (Nexit)
+   Dual Inventory, Local CRM Address Layouts & Badges
+   ========================================================================== */
+
+/* --- Dual Inventory Alerts (PDP) --- */
+.inventory-dual-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.inventory-dual-alert__header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 700;
+}
+
+.inventory-dual-alert__icon {
+  flex-shrink: 0;
+}
+
+.inventory-dual-alert__badge {
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: 0.08rem;
+  font-weight: 800;
+  padding: 0.2rem 0.8rem;
+  border-radius: 4px;
+}
+
+.inventory-dual-alert__body p {
+  margin: 0;
+}
+
+.inventory-dual-alert__primary {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem !important;
+}
+
+.inventory-dual-alert__secondary {
+  font-size: 1.25rem;
+  opacity: 0.88;
+}
+
+/* Bajo Pedido (7-14 días) */
+.inventory-dual-alert--bajo-pedido {
+  background-color: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.inventory-dual-alert--bajo-pedido .inventory-dual-alert__badge {
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+.inventory-dual-alert--bajo-pedido .inventory-dual-alert__icon {
+  stroke: #d97706;
+}
+
+/* Stock Inmediato (24-48 hrs) */
+.inventory-dual-alert--stock-inmediato {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.inventory-dual-alert--stock-inmediato .inventory-dual-alert__badge {
+  background-color: #d1fae5;
+  color: #047857;
+  border: 1px solid #6ee7b7;
+}
+
+.inventory-dual-alert--stock-inmediato .inventory-dual-alert__icon {
+  stroke: #059669;
+}
+
+/* Button Bajo Pedido Accent */
+.button--bajo-pedido {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+  border-color: #b45309 !important;
+}
+
+.button--bajo-pedido:hover {
+  background-color: #b45309 !important;
+}
+
+/* Badges on Product Cards */
+.badge--bajo-pedido {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border: 1px solid #f59e0b !important;
+  font-weight: 700;
+}
+
+.badge--stock-inmediato {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border: 1px solid #10b981 !important;
+  font-weight: 700;
+}
+
+/* --- Customer Register & Addresses (Mexico CRM) --- */
+.customer.addresses,
+.customer.register {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.customer .form__mexico-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .customer .form__mexico-grid--2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.customer .field__label-required::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.customer .field select {
+  width: 100%;
+  height: 4.8rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: 4px;
+  background-color: rgb(var(--color-background));
+  font-size: 1.4rem;
+}
+
+.customer .address-card {
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background-color: rgba(var(--color-foreground), 0.02);
+}
+
+.customer .address-card--default {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.customer .address-card__default-badge {
+  display: inline-block;
+  background-color: #10b981;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.customer-rfc-note {
+  background-color: rgba(var(--color-foreground), 0.04);
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  border-left: 3px solid #0284c7;
+}
+
+.customer-rfc-note p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  color: rgb(var(--color-foreground));
+}
+
+.customer-rfc-note small {
+  font-size: 1.15rem;
+  color: rgba(var(--color-foreground), 0.75);
+}

@@ -1,0 +1,170 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'custom-mexico-tech.css' | asset_url | stylesheet_tag }}
+
+<div class="customer register">
+  <svg style="display: none">
+    <symbol id="icon-error" viewBox="0 0 13 13">
+      <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+      <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+      <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+      <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58084L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58084L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 8.04917C6.93786 8.04917 7.48169 8.39803 7.48169 9.00504C7.48169 9.61205 6.93786 9.96091 6.50076 9.96091C6.06366 9.96091 5.51982 9.61205 5.51982 9.00504C5.51982 8.39803 6.06366 8.04917 6.50076 8.04917Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+    </symbol>
+  </svg>
+
+  <div class="register__header text-center" style="text-align: center; margin-bottom: 3rem;">
+    <h1>Crear Cuenta | Nexit México</h1>
+    <p class="caption-large">Regístrate para gestionar tus pedidos de tecnología, seguimiento con paqueterías mexicanas y facturación CFDI.</p>
+  </div>
+
+  {%- form 'create_customer', novalidate: 'novalidate' -%}
+    {%- if form.errors -%}
+      <div class="form__message" tabindex="-1" autofocus style="color: #dc2626; margin-bottom: 2rem;">
+        <h2 class="form-status" role="alert">
+          <svg aria-hidden="true" focusable="false" width="20" height="20">
+            <use href="#icon-error" />
+          </svg>
+          Por favor corrige los siguientes errores:
+        </h2>
+        <ul>
+          {%- for field in form.errors -%}
+            <li>
+              {%- if field == 'form' -%}
+                {{ form.errors.messages[field] }}
+              {%- else -%}
+                <a href="#RegisterForm-{{ field }}" style="color: #dc2626;">
+                  {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <div class="form__mexico-grid form__mexico-grid--2col">
+      <div class="field">
+        <input
+          type="text"
+          name="customer[first_name]"
+          id="RegisterForm-FirstName"
+          {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+          autocomplete="given-name"
+          placeholder="Nombre(s)"
+          required
+        >
+        <label for="RegisterForm-FirstName" class="field__label-required">Nombre(s)</label>
+      </div>
+
+      <div class="field">
+        <input
+          type="text"
+          name="customer[last_name]"
+          id="RegisterForm-LastName"
+          {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+          autocomplete="family-name"
+          placeholder="Apellidos"
+          required
+        >
+        <label for="RegisterForm-LastName" class="field__label-required">Apellidos</label>
+      </div>
+    </div>
+
+    <div class="form__mexico-grid form__mexico-grid--2col">
+      <div class="field">
+        <input
+          type="email"
+          name="customer[email]"
+          id="RegisterForm-email"
+          {% if form.email %}value="{{ form.email }}"{% endif %}
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="email"
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="RegisterForm-email-error"
+          {% endif %}
+          placeholder="correo@ejemplo.com"
+          required
+        >
+        <label for="RegisterForm-email" class="field__label-required">Correo Electrónico</label>
+      </div>
+
+      <div class="field">
+        <input
+          type="tel"
+          name="customer[note][Telefono]"
+          id="RegisterForm-phone"
+          pattern="[0-9]{10}"
+          maxlength="10"
+          placeholder="10 dígitos (Ej. 5512345678)"
+          autocomplete="tel"
+          required
+        >
+        <label for="RegisterForm-phone" class="field__label-required">Teléfono Móvil (10 dígitos)</label>
+      </div>
+    </div>
+
+    <!-- Sección de Facturación Fiscal México (CFDI 4.0 / Opcional para Empresas & Profesionales) -->
+    <div class="customer-rfc-note">
+      <p><strong>¿Requieres Factura Fiscal (CFDI 4.0)?</strong> (Opcional)</p>
+      <small>Puedes ingresar tu RFC y Razón Social ahora o solicitarla posteriormente con tu número de orden.</small>
+      <div class="form__mexico-grid form__mexico-grid--2col" style="margin-top: 1rem;">
+        <div class="field">
+          <input
+            type="text"
+            name="customer[note][RFC]"
+            id="RegisterForm-rfc"
+            pattern="[A-Za-z0-9]{12,13}"
+            maxlength="13"
+            placeholder="RFC (12 o 13 caracteres)"
+            style="text-transform: uppercase;"
+          >
+          <label for="RegisterForm-rfc">RFC con Homoclave</label>
+        </div>
+        <div class="field">
+          <input
+            type="text"
+            name="customer[note][Razon_Social]"
+            id="RegisterForm-razon-social"
+            placeholder="Razón Social / Nombre Fiscal"
+          >
+          <label for="RegisterForm-razon-social">Razón Social</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top: 1.5rem;">
+      <input
+        type="password"
+        name="customer[password]"
+        id="RegisterForm-password"
+        aria-required="true"
+        {% if form.errors contains 'password' %}
+          aria-invalid="true"
+          aria-describedby="RegisterForm-password-error"
+        {% endif %}
+        placeholder="Contraseña"
+        required
+      >
+      <label for="RegisterForm-password" class="field__label-required">Contraseña</label>
+    </div>
+
+    <p class="caption" style="margin: 1.5rem 0; font-size: 1.2rem; color: rgba(var(--color-foreground), 0.75);">
+      Al registrarte, confirmas que has leído y aceptas nuestros 
+      <a href="/policies/terms-of-service" class="link">Términos del Servicio</a> y nuestro 
+      <a href="/policies/privacy-policy" class="link">Aviso de Privacidad</a> de acuerdo con la legislación mexicana.
+    </p>
+
+    <button class="button button--full-width button--primary" style="margin-top: 1rem;">
+      Crear Cuenta
+    </button>
+
+    <div class="text-center" style="margin-top: 2rem; text-align: center;">
+      <span>¿Ya tienes una cuenta registrada? </span>
+      <a href="{{ routes.account_login_url }}" class="link underlined-link">
+        Iniciar Sesión
+      </a>
+    </div>
+  {%- endform -%}
+</div>

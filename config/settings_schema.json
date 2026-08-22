@@ -1466,5 +1466,32 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Trazabilidad y Analítica (México)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Google Analytics 4 (GA4)"
+      },
+      {
+        "type": "text",
+        "id": "ga4_measurement_id",
+        "label": "ID de Medición de GA4",
+        "default": "G-XXXXXXXXXX",
+        "info": "Ejemplo: G-1234567890"
+      },
+      {
+        "type": "header",
+        "content": "Meta Pixel (Facebook / Instagram)"
+      },
+      {
+        "type": "text",
+        "id": "meta_pixel_id",
+        "label": "ID del Píxel de Meta",
+        "default": "123456789012345",
+        "info": "Identificador numérico de tu Píxel de Meta Ads"
+      }
+    ]
   }
 ]

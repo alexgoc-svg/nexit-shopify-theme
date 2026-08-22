@@ -1,0 +1,507 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'custom-mexico-tech.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+
+{%- paginate customer.addresses by 5 -%}
+  <div class="customer addresses" data-customer-addresses>
+    <svg style="display: none">
+      <symbol id="icon-caret" viewBox="0 0 10 6">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+      </symbol>
+    </svg>
+
+    <div class="addresses__header text-center" style="text-align: center; margin-bottom: 3rem;">
+      <h1>Libreta de Direcciones | Envío México</h1>
+      <p class="caption-large">Administra tus domicilios de entrega para pedidos de hardware, componentes y equipos de importación.</p>
+      <a href="{{ routes.account_url }}" class="link underlined-link" style="display: inline-block; margin-top: 1rem;">
+        &larr; Volver a mi cuenta
+      </a>
+    </div>
+
+    <div class="text-center" style="text-align: center; margin-bottom: 3rem;" data-address>
+      <button
+        type="button"
+        aria-expanded="false"
+        aria-controls="AddAddress"
+        class="button button--primary"
+      >
+        + Agregar Nueva Dirección en México
+      </button>
+      <div id="AddAddress" class="address-form-modal" style="margin-top: 2rem; text-align: left;">
+        <h2 id="AddressNewHeading" class="h3" style="margin-bottom: 1.5rem;">Nueva Dirección de Entrega</h2>
+        {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+          <div class="form__mexico-grid form__mexico-grid--2col">
+            <div class="field">
+              <input
+                type="text"
+                id="AddressFirstNameNew"
+                name="address[first_name]"
+                value="{{ form.first_name }}"
+                autocomplete="given-name"
+                placeholder="Nombre(s)"
+                required
+              >
+              <label for="AddressFirstNameNew" class="field__label-required">Nombre(s)</label>
+            </div>
+            <div class="field">
+              <input
+                type="text"
+                id="AddressLastNameNew"
+                name="address[last_name]"
+                value="{{ form.last_name }}"
+                autocomplete="family-name"
+                placeholder="Apellidos"
+                required
+              >
+              <label for="AddressLastNameNew" class="field__label-required">Apellidos</label>
+            </div>
+          </div>
+
+          <!-- Calle y Número Exterior / Interior -->
+          <div class="field">
+            <input
+              type="text"
+              id="AddressAddress1New"
+              name="address[address1]"
+              value="{{ form.address1 }}"
+              autocomplete="address-line1"
+              placeholder="Calle, Número Exterior e Interior"
+              required
+            >
+            <label for="AddressAddress1New" class="field__label-required">Calle y Número Exterior / Interior</label>
+          </div>
+
+          <!-- Colonia / Asentamiento (Campo Obligatorio México) -->
+          <div class="field">
+            <input
+              type="text"
+              id="AddressAddress2New"
+              name="address[address2]"
+              value="{{ form.address2 }}"
+              autocomplete="address-line2"
+              placeholder="Colonia, Fraccionamiento o Barrio"
+              required
+            >
+            <label for="AddressAddress2New" class="field__label-required">Colonia / Asentamiento</label>
+          </div>
+
+          <div class="form__mexico-grid form__mexico-grid--2col">
+            <!-- Código Postal (Campo Obligatorio México: 5 dígitos) -->
+            <div class="field">
+              <input
+                type="text"
+                id="AddressZipNew"
+                name="address[zip]"
+                value="{{ form.zip }}"
+                autocapitalize="characters"
+                autocomplete="postal-code"
+                pattern="[0-9]{5}"
+                maxlength="5"
+                placeholder="Código Postal (5 dígitos)"
+                required
+              >
+              <label for="AddressZipNew" class="field__label-required">Código Postal (CP - 5 dígitos)</label>
+            </div>
+
+            <!-- Municipio / Alcaldía (Campo Obligatorio México) -->
+            <div class="field">
+              <input
+                type="text"
+                id="AddressCityNew"
+                name="address[city]"
+                value="{{ form.city }}"
+                autocomplete="address-level2"
+                placeholder="Municipio o Alcaldía"
+                required
+              >
+              <label for="AddressCityNew" class="field__label-required">Municipio / Alcaldía</label>
+            </div>
+          </div>
+
+          <div class="form__mexico-grid form__mexico-grid--2col">
+            <!-- País (México por defecto) -->
+            <div class="field">
+              <div class="select">
+                <select
+                  id="AddressCountryNew"
+                  name="address[country]"
+                  data-default="Mexico"
+                  autocomplete="country"
+                  class="select__select"
+                >
+                  <option value="Mexico" selected>México</option>
+                  {{ all_country_option_tags }}
+                </select>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                  <use href="#icon-caret" />
+                </svg>
+              </div>
+              <label for="AddressCountryNew">País</label>
+            </div>
+
+            <!-- Estado / Entidad Federativa (Campo Obligatorio México) -->
+            <div id="AddressProvinceContainerNew" class="field">
+              <div class="select">
+                <select
+                  id="AddressProvinceNew"
+                  name="address[province]"
+                  data-default="{{ form.province }}"
+                  autocomplete="address-level1"
+                  class="select__select"
+                  required
+                >
+                  <option value="" disabled {% if form.province == blank %}selected{% endif %}>Selecciona un Estado</option>
+                  <option value="Aguascalientes">Aguascalientes</option>
+                  <option value="Baja California">Baja California</option>
+                  <option value="Baja California Sur">Baja California Sur</option>
+                  <option value="Campeche">Campeche</option>
+                  <option value="Chiapas">Chiapas</option>
+                  <option value="Chihuahua">Chihuahua</option>
+                  <option value="Ciudad de México">Ciudad de México (CDMX)</option>
+                  <option value="Coahuila">Coahuila</option>
+                  <option value="Colima">Colima</option>
+                  <option value="Durango">Durango</option>
+                  <option value="Estado de México">Estado de México (Edomex)</option>
+                  <option value="Guanajuato">Guanajuato</option>
+                  <option value="Guerrero">Guerrero</option>
+                  <option value="Hidalgo">Hidalgo</option>
+                  <option value="Jalisco">Jalisco</option>
+                  <option value="Michoacán">Michoacán</option>
+                  <option value="Morelos">Morelos</option>
+                  <option value="Nayarit">Nayarit</option>
+                  <option value="Nuevo León">Nuevo León</option>
+                  <option value="Oaxaca">Oaxaca</option>
+                  <option value="Puebla">Puebla</option>
+                  <option value="Querétaro">Querétaro</option>
+                  <option value="Quintana Roo">Quintana Roo</option>
+                  <option value="San Luis Potosí">San Luis Potosí</option>
+                  <option value="Sinaloa">Sinaloa</option>
+                  <option value="Sonora">Sonora</option>
+                  <option value="Tabasco">Tabasco</option>
+                  <option value="Tamaulipas">Tamaulipas</option>
+                  <option value="Tlaxcala">Tlaxcala</option>
+                  <option value="Veracruz">Veracruz</option>
+                  <option value="Yucatán">Yucatán</option>
+                  <option value="Zacatecas">Zacatecas</option>
+                </select>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                  <use href="#icon-caret" />
+                </svg>
+              </div>
+              <label for="AddressProvinceNew" class="field__label-required">Estado / Entidad Federativa</label>
+            </div>
+          </div>
+
+          <div class="form__mexico-grid form__mexico-grid--2col">
+            <!-- Teléfono (10 dígitos obligatorio para mensajería) -->
+            <div class="field">
+              <input
+                type="tel"
+                id="AddressPhoneNew"
+                name="address[phone]"
+                value="{{ form.phone }}"
+                autocomplete="tel"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                placeholder="Teléfono móvil a 10 dígitos"
+                required
+              >
+              <label for="AddressPhoneNew" class="field__label-required">Teléfono de Entrega (10 dígitos)</label>
+            </div>
+
+            <!-- Referencias / Empresa -->
+            <div class="field">
+              <input
+                type="text"
+                id="AddressCompanyNew"
+                name="address[company]"
+                value="{{ form.company }}"
+                autocomplete="organization"
+                placeholder="Empresa o Referencias (ej. Entre calles)"
+              >
+              <label for="AddressCompanyNew">Referencias / Empresa (Opcional)</label>
+            </div>
+          </div>
+
+          <div style="margin: 1.5rem 0;">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_new">Establecer como dirección predeterminada de entrega</label>
+          </div>
+
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="button button--primary">Guardar Dirección</button>
+            <button type="reset" class="button button--secondary">Cancelar</button>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <!-- Lista de Direcciones Existentes -->
+    <ul role="list" style="list-style: none; padding: 0;">
+      {%- for address in customer.addresses -%}
+        <li data-address>
+          <div class="address-card {% if address == customer.default_address %}address-card--default{% endif %}">
+            {%- if address == customer.default_address -%}
+              <span class="address-card__default-badge">Dirección Predeterminada</span>
+            {%- endif -%}
+
+            <h3 class="h4" style="margin-top: 0;">{{ address.name }}</h3>
+            
+            <p style="margin: 0.5rem 0; line-height: 1.6;">
+              <strong>Calle y Número:</strong> {{ address.address1 }}<br>
+              <strong>Colonia:</strong> {{ address.address2 }}<br>
+              <strong>Municipio / Alcaldía:</strong> {{ address.city }}<br>
+              <strong>Estado y CP:</strong> {{ address.province }}, C.P. {{ address.zip }}<br>
+              <strong>País:</strong> {{ address.country }}<br>
+              {%- if address.phone != blank -%}
+                <strong>Teléfono:</strong> {{ address.phone }}<br>
+              {%- endif -%}
+              {%- if address.company != blank -%}
+                <strong>Referencias / Empresa:</strong> {{ address.company }}<br>
+              {%- endif -%}
+            </p>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+              <button
+                type="button"
+                id="EditFormButton_{{ address.id }}"
+                aria-label="Editar dirección {{ forloop.index }}"
+                aria-controls="EditAddress_{{ address.id }}"
+                aria-expanded="false"
+                data-address-id="{{ address.id }}"
+                class="button button--secondary"
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                aria-label="Eliminar dirección {{ forloop.index }}"
+                data-target="{{ address.url }}"
+                data-confirm-message="¿Estás seguro de que deseas eliminar esta dirección de entrega?"
+                class="button button--tertiary"
+              >
+                Eliminar
+              </button>
+            </div>
+
+            <!-- Formulario de Edición de Dirección -->
+            <div id="EditAddress_{{ address.id }}" style="display: none; margin-top: 2rem; border-top: 1px solid rgba(var(--color-foreground), 0.1); padding-top: 2rem;">
+              <h4 class="h4">Editar Dirección de Entrega</h4>
+              {%- form 'customer_address', address -%}
+                <div class="form__mexico-grid form__mexico-grid--2col">
+                  <div class="field">
+                    <input
+                      type="text"
+                      id="AddressFirstName_{{ form.id }}"
+                      name="address[first_name]"
+                      value="{{ form.first_name }}"
+                      autocomplete="given-name"
+                      placeholder="Nombre(s)"
+                      required
+                    >
+                    <label for="AddressFirstName_{{ form.id }}" class="field__label-required">Nombre(s)</label>
+                  </div>
+                  <div class="field">
+                    <input
+                      type="text"
+                      id="AddressLastName_{{ form.id }}"
+                      name="address[last_name]"
+                      value="{{ form.last_name }}"
+                      autocomplete="family-name"
+                      placeholder="Apellidos"
+                      required
+                    >
+                    <label for="AddressLastName_{{ form.id }}" class="field__label-required">Apellidos</label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <input
+                    type="text"
+                    id="AddressAddress1_{{ form.id }}"
+                    name="address[address1]"
+                    value="{{ form.address1 }}"
+                    autocomplete="address-line1"
+                    placeholder="Calle y Número Exterior / Interior"
+                    required
+                  >
+                  <label for="AddressAddress1_{{ form.id }}" class="field__label-required">Calle y Número Exterior / Interior</label>
+                </div>
+
+                <div class="field">
+                  <input
+                    type="text"
+                    id="AddressAddress2_{{ form.id }}"
+                    name="address[address2]"
+                    value="{{ form.address2 }}"
+                    autocomplete="address-line2"
+                    placeholder="Colonia / Asentamiento"
+                    required
+                  >
+                  <label for="AddressAddress2_{{ form.id }}" class="field__label-required">Colonia / Asentamiento</label>
+                </div>
+
+                <div class="form__mexico-grid form__mexico-grid--2col">
+                  <div class="field">
+                    <input
+                      type="text"
+                      id="AddressZip_{{ form.id }}"
+                      name="address[zip]"
+                      value="{{ form.zip }}"
+                      autocapitalize="characters"
+                      autocomplete="postal-code"
+                      pattern="[0-9]{5}"
+                      maxlength="5"
+                      placeholder="Código Postal (5 dígitos)"
+                      required
+                    >
+                    <label for="AddressZip_{{ form.id }}" class="field__label-required">Código Postal (CP - 5 dígitos)</label>
+                  </div>
+
+                  <div class="field">
+                    <input
+                      type="text"
+                      id="AddressCity_{{ form.id }}"
+                      name="address[city]"
+                      value="{{ form.city }}"
+                      autocomplete="address-level2"
+                      placeholder="Municipio / Alcaldía"
+                      required
+                    >
+                    <label for="AddressCity_{{ form.id }}" class="field__label-required">Municipio / Alcaldía</label>
+                  </div>
+                </div>
+
+                <div class="form__mexico-grid form__mexico-grid--2col">
+                  <div class="field">
+                    <div class="select">
+                      <select
+                        id="AddressCountry_{{ form.id }}"
+                        name="address[country]"
+                        data-address-country-select
+                        data-default="{{ form.country }}"
+                        data-form-id="{{ form.id }}"
+                        autocomplete="country"
+                        class="select__select"
+                      >
+                        <option value="Mexico" {% if form.country == 'Mexico' or form.country == 'México' %}selected{% endif %}>México</option>
+                        {{ all_country_option_tags }}
+                      </select>
+                      <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                        <use href="#icon-caret" />
+                      </svg>
+                    </div>
+                    <label for="AddressCountry_{{ form.id }}">País</label>
+                  </div>
+
+                  <div id="AddressProvinceContainer_{{ form.id }}" class="field">
+                    <div class="select">
+                      <select
+                        id="AddressProvince_{{ form.id }}"
+                        name="address[province]"
+                        data-default="{{ form.province }}"
+                        autocomplete="address-level1"
+                        class="select__select"
+                        required
+                      >
+                        <option value="" disabled>Selecciona un Estado</option>
+                        <option value="Aguascalientes" {% if form.province == 'Aguascalientes' %}selected{% endif %}>Aguascalientes</option>
+                        <option value="Baja California" {% if form.province == 'Baja California' %}selected{% endif %}>Baja California</option>
+                        <option value="Baja California Sur" {% if form.province == 'Baja California Sur' %}selected{% endif %}>Baja California Sur</option>
+                        <option value="Campeche" {% if form.province == 'Campeche' %}selected{% endif %}>Campeche</option>
+                        <option value="Chiapas" {% if form.province == 'Chiapas' %}selected{% endif %}>Chiapas</option>
+                        <option value="Chihuahua" {% if form.province == 'Chihuahua' %}selected{% endif %}>Chihuahua</option>
+                        <option value="Ciudad de México" {% if form.province == 'Ciudad de México' or form.province == 'CDMX' %}selected{% endif %}>Ciudad de México (CDMX)</option>
+                        <option value="Coahuila" {% if form.province == 'Coahuila' %}selected{% endif %}>Coahuila</option>
+                        <option value="Colima" {% if form.province == 'Colima' %}selected{% endif %}>Colima</option>
+                        <option value="Durango" {% if form.province == 'Durango' %}selected{% endif %}>Durango</option>
+                        <option value="Estado de México" {% if form.province == 'Estado de México' or form.province == 'Edomex' %}selected{% endif %}>Estado de México (Edomex)</option>
+                        <option value="Guanajuato" {% if form.province == 'Guanajuato' %}selected{% endif %}>Guanajuato</option>
+                        <option value="Guerrero" {% if form.province == 'Guerrero' %}selected{% endif %}>Guerrero</option>
+                        <option value="Hidalgo" {% if form.province == 'Hidalgo' %}selected{% endif %}>Hidalgo</option>
+                        <option value="Jalisco" {% if form.province == 'Jalisco' %}selected{% endif %}>Jalisco</option>
+                        <option value="Michoacán" {% if form.province == 'Michoacán' %}selected{% endif %}>Michoacán</option>
+                        <option value="Morelos" {% if form.province == 'Morelos' %}selected{% endif %}>Morelos</option>
+                        <option value="Nayarit" {% if form.province == 'Nayarit' %}selected{% endif %}>Nayarit</option>
+                        <option value="Nuevo León" {% if form.province == 'Nuevo León' %}selected{% endif %}>Nuevo León</option>
+                        <option value="Oaxaca" {% if form.province == 'Oaxaca' %}selected{% endif %}>Oaxaca</option>
+                        <option value="Puebla" {% if form.province == 'Puebla' %}selected{% endif %}>Puebla</option>
+                        <option value="Querétaro" {% if form.province == 'Querétaro' %}selected{% endif %}>Querétaro</option>
+                        <option value="Quintana Roo" {% if form.province == 'Quintana Roo' %}selected{% endif %}>Quintana Roo</option>
+                        <option value="San Luis Potosí" {% if form.province == 'San Luis Potosí' %}selected{% endif %}>San Luis Potosí</option>
+                        <option value="Sinaloa" {% if form.province == 'Sinaloa' %}selected{% endif %}>Sinaloa</option>
+                        <option value="Sonora" {% if form.province == 'Sonora' %}selected{% endif %}>Sonora</option>
+                        <option value="Tabasco" {% if form.province == 'Tabasco' %}selected{% endif %}>Tabasco</option>
+                        <option value="Tamaulipas" {% if form.province == 'Tamaulipas' %}selected{% endif %}>Tamaulipas</option>
+                        <option value="Tlaxcala" {% if form.province == 'Tlaxcala' %}selected{% endif %}>Tlaxcala</option>
+                        <option value="Veracruz" {% if form.province == 'Veracruz' %}selected{% endif %}>Veracruz</option>
+                        <option value="Yucatán" {% if form.province == 'Yucatán' %}selected{% endif %}>Yucatán</option>
+                        <option value="Zacatecas" {% if form.province == 'Zacatecas' %}selected{% endif %}>Zacatecas</option>
+                      </select>
+                      <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                        <use href="#icon-caret" />
+                      </svg>
+                    </div>
+                    <label for="AddressProvince_{{ form.id }}" class="field__label-required">Estado / Entidad Federativa</label>
+                  </div>
+                </div>
+
+                <div class="form__mexico-grid form__mexico-grid--2col">
+                  <div class="field">
+                    <input
+                      type="tel"
+                      id="AddressPhone_{{ form.id }}"
+                      name="address[phone]"
+                      value="{{ form.phone }}"
+                      autocomplete="tel"
+                      pattern="[0-9]{10}"
+                      maxlength="10"
+                      placeholder="Teléfono móvil a 10 dígitos"
+                      required
+                    >
+                    <label for="AddressPhone_{{ form.id }}" class="field__label-required">Teléfono (10 dígitos)</label>
+                  </div>
+
+                  <div class="field">
+                    <input
+                      type="text"
+                      id="AddressCompany_{{ form.id }}"
+                      name="address[company]"
+                      value="{{ form.company }}"
+                      autocomplete="organization"
+                      placeholder="Referencias / Empresa"
+                    >
+                    <label for="AddressCompany_{{ form.id }}">Referencias / Empresa (Opcional)</label>
+                  </div>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                  {{ form.set_as_default_checkbox }}
+                  <label for="address_default_address_{{ form.id }}">
+                    Establecer como dirección predeterminada de entrega
+                  </label>
+                </div>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                  <button class="button button--primary">Actualizar Dirección</button>
+                  <button type="reset" class="button button--secondary">Cancelar</button>
+                </div>
+              {%- endform -%}
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+<script>
+  window.addEventListener('load', () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  });
+</script>

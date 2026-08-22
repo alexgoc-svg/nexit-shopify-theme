@@ -60,6 +60,27 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
+        {%- liquid
+          assign current_variant = product.selected_or_first_available_variant
+          assign is_bajo_pedido = false
+          assign is_stock_inmediato = false
+
+          if product.tags contains 'bajo_pedido' or product.metafields.custom.bajo_pedido.value == true or product.metafields.custom.bajo_pedido == true or product.metafields.custom.tipo_inventario == 'bajo_pedido' or current_variant.metafields.custom.bajo_pedido.value == true or current_variant.metafields.custom.bajo_pedido == true or current_variant.metafields.custom.tipo_inventario == 'bajo_pedido'
+            assign is_bajo_pedido = true
+          elsif product.tags contains 'stock_inmediato' or product.metafields.custom.stock_inmediato.value == true or product.metafields.custom.stock_inmediato == true or product.metafields.custom.tipo_inventario == 'stock_inmediato' or current_variant.metafields.custom.stock_inmediato.value == true or current_variant.metafields.custom.stock_inmediato == true or current_variant.metafields.custom.tipo_inventario == 'stock_inmediato'
+            assign is_stock_inmediato = true
+          endif
+        -%}
+
+        {%- render 'inventory-dual-alert', product: product, variant: current_variant -%}
+
+        {%- if is_bajo_pedido -%}
+          <input type="hidden" name="properties[Modalidad de Inventario]" value="Bajo Pedido (7-14 días hábiles)">
+          <input type="hidden" name="properties[Tiempo de Entrega]" value="7 a 14 días hábiles">
+        {%- elsif is_stock_inmediato -%}
+          <input type="hidden" name="properties[Modalidad de Inventario]" value="Stock Inmediato (Envío Express 24-48 hrs)">
+        {%- endif -%}
+
         <div class="product-form__buttons">
           {%- liquid
             assign check_against_inventory = true
@@ -74,7 +95,7 @@
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="product-form__submit button button--full-width {% if is_bajo_pedido %}button--bajo-pedido{% elsif show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null
@@ -87,13 +108,15 @@
                 {{ 'products.product.unavailable' | t }}
               {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
                 {{ 'products.product.sold_out' | t }}
+              {%- elsif is_bajo_pedido -%}
+                Comprar bajo pedido
               {%- else -%}
                 {{ 'products.product.add_to_cart' | t }}
               {%- endif -%}
             </span>
             {%- render 'loading-spinner' -%}
           </button>
-          {%- if show_dynamic_checkout -%}
+          {%- if show_dynamic_checkout and is_bajo_pedido == false -%}
             {{ form | payment_button }}
           {%- endif -%}
         </div>
