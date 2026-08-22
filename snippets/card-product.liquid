@@ -141,6 +141,14 @@
                 >
                   {{- 'products.product.on_sale' | t -}}
                 </span>
+              {%- elsif card_product.tags contains 'bajo_pedido' or card_product.metafields.custom.bajo_pedido.value == true or card_product.metafields.custom.bajo_pedido == true or card_product.metafields.custom.tipo_inventario == 'bajo_pedido' -%}
+                <span class="badge badge--bajo-pedido badge--bottom-left">
+                  Bajo Pedido (7-14 días)
+                </span>
+              {%- elsif card_product.tags contains 'stock_inmediato' or card_product.metafields.custom.stock_inmediato.value == true or card_product.metafields.custom.stock_inmediato == true or card_product.metafields.custom.tipo_inventario == 'stock_inmediato' -%}
+                <span class="badge badge--stock-inmediato badge--bottom-left">
+                  Stock Inmediato
+                </span>
               {%- endif -%}
             </div>
           </div>
@@ -371,7 +379,11 @@
                     >
                       <span>
                         {%- if card_product.selected_or_first_available_variant.available -%}
-                          {{ 'products.product.add_to_cart' | t }}
+                          {%- if card_product.tags contains 'bajo_pedido' or card_product.metafields.custom.bajo_pedido.value == true or card_product.metafields.custom.bajo_pedido == true or card_product.metafields.custom.tipo_inventario == 'bajo_pedido' -%}
+                            Comprar bajo pedido
+                          {%- else -%}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {%- endif -%}
                         {%- else -%}
                           {{ 'products.product.sold_out' | t }}
                         {%- endif -%}

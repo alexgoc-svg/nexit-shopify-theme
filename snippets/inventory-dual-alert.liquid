@@ -1,0 +1,58 @@
+﻿{% comment %}
+  Renders dual inventory alerts and shipping information for Mexican tech products.
+  Accepts:
+  - product: {Object} Product Liquid object
+  - variant: {Object} Selected or first available variant object (optional)
+
+  Usage:
+  {% render 'inventory-dual-alert', product: product, variant: product.selected_or_first_available_variant %}
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = variant | default: product.selected_or_first_available_variant
+  assign is_bajo_pedido = false
+  assign is_stock_inmediato = false
+
+  if product.tags contains 'bajo_pedido' or product.metafields.custom.bajo_pedido.value == true or product.metafields.custom.bajo_pedido == true or product.metafields.custom.tipo_inventario == 'bajo_pedido' or current_variant.metafields.custom.bajo_pedido.value == true or current_variant.metafields.custom.bajo_pedido == true or current_variant.metafields.custom.tipo_inventario == 'bajo_pedido'
+    assign is_bajo_pedido = true
+  elsif product.tags contains 'stock_inmediato' or product.metafields.custom.stock_inmediato.value == true or product.metafields.custom.stock_inmediato == true or product.metafields.custom.tipo_inventario == 'stock_inmediato' or current_variant.metafields.custom.stock_inmediato.value == true or current_variant.metafields.custom.stock_inmediato == true or current_variant.metafields.custom.tipo_inventario == 'stock_inmediato'
+    assign is_stock_inmediato = true
+  endif
+-%}
+
+{%- if is_bajo_pedido -%}
+  <div class="inventory-dual-alert inventory-dual-alert--bajo-pedido" role="status" aria-live="polite">
+    <div class="inventory-dual-alert__header">
+      <svg class="inventory-dual-alert__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <span class="inventory-dual-alert__badge">Equipo Bajo Pedido</span>
+    </div>
+    <div class="inventory-dual-alert__body">
+      <p class="inventory-dual-alert__primary">
+        Tiempo de entrega estimado: <strong>7-14 días</strong> hábiles.
+      </p>
+      <p class="inventory-dual-alert__secondary">
+        Producto importado bajo demanda con garantía directa y tracking nacional (DHL/FedEx/Estafeta).
+      </p>
+    </div>
+  </div>
+{%- elsif is_stock_inmediato -%}
+  <div class="inventory-dual-alert inventory-dual-alert--stock-inmediato" role="status" aria-live="polite">
+    <div class="inventory-dual-alert__header">
+      <svg class="inventory-dual-alert__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+      <span class="inventory-dual-alert__badge">Stock Inmediato</span>
+    </div>
+    <div class="inventory-dual-alert__body">
+      <p class="inventory-dual-alert__primary">
+        Disponible en almacén México: Envío express <strong>24 a 48 hrs</strong>.
+      </p>
+      <p class="inventory-dual-alert__secondary">
+        Listo para despacho inmediato con factura fiscal CFDI disponible.
+      </p>
+    </div>
+  </div>
+{%- endif -%}
